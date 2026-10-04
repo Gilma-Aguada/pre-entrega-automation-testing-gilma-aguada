@@ -1,15 +1,24 @@
-# ProyectoLabQA
+# 🧪 Pre-Entrega: Automatización de Pruebas QA (SauceDemo)
 
-## Prop�sito del proyecto
-Automatizaci�n de pruebas QA sobre SauceDemo.
+Este repositorio contiene la pre-entrega correspondiente al proyecto de automatización de pruebas de software, aplicando buenas prácticas de testing funcional sobre la plataforma web de comercio electrónico **SauceDemo**.
 
-## Tecnolog�as
-- Python
-- Pytest
-- Selenium
+---
 
-## Instalaci�n
-pip install pytest selenium pytest-html
+## 🚀 Tecnologías y Herramientas Utilizadas
+* **Python**: Lenguaje de programación principal para la lógica de los scripts.
+* **Pytest**: Framework de pruebas elegido para estructurar, organizar y ejecutar los test cases.
+* **Selenium WebDriver**: Herramienta de automatización web para la interacción con los elementos del navegador.
+* **Pytest-HTML**: Plugin utilizado para la generación automática de reportes de ejecución en formato HTML.
+* **Git y GitHub**: Control de versiones y repositorio remoto para la entrega.
 
-## Ejecuci�n
-pytest -v --html=reporte.html
+---
+
+## 📂 Estructura del Proyecto
+```text
+pre-entrega-automation-testing-gilma-aguada/
+│
+├── tests/
+│   └── test_saucedemo.py    # Casos de prueba automatizados (Login, Catálogo y Carrito)
+├── assets/                  # Recursos visuales y estilos adicionales
+├── reporte.html             # Reporte detallado de la última ejecución de pruebas
+└── README.md                # Documentación oficial del proyecto
