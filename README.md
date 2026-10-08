@@ -5,7 +5,7 @@ Este repositorio contiene la pre-entrega correspondiente al proyecto de automati
 ## 🚀 Tecnologías y Herramientas Utilizadas
 
 * **Python**: Lenguaje de programación principal para la lógica de los scripts.
-* **Pytest**: Framework de pruebas elegido para estructurar, organizar y ejecutar los test cases[cite: 7].
+* **Pytest**: Framework de pruebas elegido para estructurar, organizar y ejecutar los test cases.
 * **Selenium WebDriver**: Herramienta de automatización web para la interacción con los elementos del navegador.
 * **Pytest-HTML**: Plugin utilizado para la generación automática de reportes de ejecución en formato HTML.
 * **Git y GitHub**: Control de versiones y repositorio remoto para la entrega.
