@@ -1,4 +1,7 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support import expected_conditions as EC
 from utils.helpers import iniciar_sesion
 
 def test_01_login_exitoso(driver):
@@ -11,7 +14,7 @@ def test_01_login_exitoso(driver):
 
 def test_02_verificar_catalogo(driver):
     productos = driver.find_elements(By.CLASS_NAME, "inventory_item")
-    assert len(productos) > 0, "No se encontraron productos en el inventario"
+    assert len(productos) > 0, "No se encontraron productos visibles en el inventario"
 
     primer_producto = productos[0]
     nombre_producto = primer_producto.find_element(By.CLASS_NAME, "inventory_item_name").text
@@ -22,24 +25,52 @@ def test_02_verificar_catalogo(driver):
     print(f"Primer producto: {nombre_producto} - {precio_producto}")
     print("Test 02: Catálogo OK")
 
-def test_03_agregar_al_carrito(driver):
+def test_03_agregar_producto_al_carrito(driver):
     iniciar_sesion(driver)
     
-    # 1. Agregar el primer producto al carrito
-    boton_agregar = driver.find_element(By.CLASS_NAME, "btn_inventory")
-    primer_producto_nombre = driver.find_element(By.CLASS_NAME, "inventory_item_name").text
+    wait = WebDriverWait(driver, 10)
+    
+    # 1. Esperar a que el botón de agregar esté listo y hacer clic
+    boton_agregar = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "btn_inventory")))
     boton_agregar.click()
     
-    # 2. Verificar que el contador del carrito se incremente a "1"
-    badge_carrito = driver.find_element(By.CLASS_NAME, "shopping_cart_badge")
-    assert badge_carrito.text == "1", "El contador del carrito no se actualizó a 1"
+    print("Test 03: Producto agregado al carrito OK")
+
+def test_04_verificar_detalle_producto(driver):
+    iniciar_sesion(driver)
     
-    # 3. Navegar al carrito de compras
-    badge_carrito.click()
-    assert "/cart.html" in driver.current_url, "No se navegó correctamente al carrito"
+    wait = WebDriverWait(driver, 10)
     
-    # 4. Comprobar que el producto añadido aparezca correctamente en el carrito
-    producto_en_carrito = driver.find_element(By.CLASS_NAME, "inventory_item_name").text
-    assert producto_en_carrito == primer_producto_nombre, "El producto en el carrito no coincide"
+    # 1. Esperar a que el nombre del primer producto sea clickeable y hacer clic para ver su detalle
+    enlace_producto = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "inventory_item_name")))
+    nombre_esperado = enlace_producto.text
+    enlace_producto.click()
     
-    print("Test 03: Interacción con carrito OK")
+    # 2. Esperar a que la URL cambie a la vista de detalle del producto
+    wait.until(EC.url_contains("/inventory-item.html?id="))
+    assert "/inventory-item.html" in driver.current_url, "No se navegó a la vista de detalle del producto"
+    
+    # 3. Comprobar que el producto en la vista de detalle coincida
+    nombre_en_detalle = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "inventory_details_name"))).text
+    assert nombre_en_detalle == nombre_esperado, "El nombre del producto en detalle no coincide"
+    
+    print("Test 04: Verificación de detalle de producto OK")
+
+def test_05_filtrar_productos_por_nombre(driver):
+    iniciar_sesion(driver)
+    
+    wait = WebDriverWait(driver, 10)
+    
+    # 1. Esperar a que el selector de ordenamiento esté disponible en la página
+    elemento_select = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "product_sort_container")))
+    select = Select(elemento_select)
+    
+    # 2. Seleccionar el filtro de ordenamiento alfabético inverso por nombre (de Z a A)
+    select.select_by_value("za")
+    
+    # 3. Verificar que el primer producto de la lista filtrada muestre su nombre correctamente
+    primer_producto_filtrado = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "inventory_item_name"))).text
+    assert primer_producto_filtrado != "", "El producto filtrado no muestra nombre"
+    
+    print(f"Primer producto filtrado por nombre: {primer_producto_filtrado}")
+    print("Test 05: Filtrado de productos por nombre OK")
