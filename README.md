@@ -1,4 +1,4 @@
-# 🧪 Pre-Entrega: Automatización de Pruebas QA (SauceDemo)
+#  Pre-Entrega: Automatización de Pruebas QA (SauceDemo)
 
 Este repositorio contiene la pre-entrega correspondiente al proyecto de automatización de pruebas de software, aplicando buenas prácticas de testing funcional sobre la plataforma web de comercio electrónico **SauceDemo**.
 
